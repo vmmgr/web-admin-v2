@@ -121,7 +121,7 @@ export default function Dashboard(props: any) {
                         </IconButton>
                         <Typography component="h1" variant="h6" color="inherit" noWrap
                                     className={classesDashboard.title}>
-                            AS59105 Admin Page
+                            vmmgr Admin Page
                         </Typography>
                         <IconButton color="inherit">
                             <Badge badgeContent={0} color="secondary">
