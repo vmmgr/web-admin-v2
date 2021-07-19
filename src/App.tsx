@@ -8,6 +8,7 @@ import Token from "./pages/Token/Token";
 import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
 import Node from "./pages/Node/Node";
 import VM from "./pages/VM/VM";
+import Group from "./pages/Group/Group";
 
 export default class App extends React.Component {
     render() {
@@ -17,6 +18,7 @@ export default class App extends React.Component {
                     <Redirect from="/" to="/login" exact/>
                     <Route exact path="/login" component={SignIn}/>
                     <Route exact path="/dashboard" component={Dashboard}/>
+                    <Route exact path="/dashboard/group" component={Group}/>
                     <Route exact path="/dashboard/node" component={Node}/>
                     <Route exact path="/dashboard/vm" component={VM}/>
                     <Route exact path="/dashboard/token" component={Token}/>

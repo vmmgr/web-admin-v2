@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import Dashboard from "../../components/Dashboard/Dashboard";
 import useStyles from "../Dashboard/styles"
 import {
+    Button,
     Card,
     CardActions,
     CardContent,
@@ -12,31 +13,49 @@ import {
     Typography
 } from "@material-ui/core";
 import {GetAll} from "../../api/User";
-import {UserDetailData} from "../../interface";
+import {GetAll as TemplateGetAll} from "../../api/Template";
+import {TemplateBaseData, UserDetailData} from "../../interface";
 import {useSnackbar} from "notistack";
+import {UserAddDialogs} from "./UserAddDialog";
 
 
 export default function User() {
     const classes = useStyles();
     const [users, setUsers] = useState<UserDetailData[]>();
     const [initUsers, setInitUsers] = useState<UserDetailData[]>();
+    const [template, setTemplate] = useState<TemplateBaseData>();
+    const [createOpen, setCreateOpen] = useState(false);
+    const [reload, setReload] = useState(true);
     const {enqueueSnackbar} = useSnackbar();
     // 1:有効 2:無効
     const [value, setValue] = React.useState(1);
 
 
     useEffect(() => {
-        GetAll().then(res => {
-            if (res.error === "") {
-                console.log(res);
-                setUsers(res.data);
-                setInitUsers(res.data);
-            } else {
-                enqueueSnackbar("" + res.error, {variant: "error"});
-            }
-        })
-    }, []);
+        if (reload) {
+            setReload(false);
+            setUsers(undefined)
+            setInitUsers(undefined)
 
+            GetAll().then(res => {
+                if (res.error === "") {
+                    console.log(res);
+                    setUsers(res.data);
+                    setInitUsers(res.data);
+                } else {
+                    enqueueSnackbar("" + res.error, {variant: "error"});
+                }
+            })
+            TemplateGetAll().then(res => {
+                if (res.error === "") {
+                    console.log(res);
+                    setTemplate(res.data);
+                } else {
+                    enqueueSnackbar("" + res.error, {variant: "error"});
+                }
+            })
+        }
+    }, [reload]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValue(Number(event.target.value))
@@ -79,12 +98,15 @@ export default function User() {
                     }}
                 />
             </Paper>
+            <Button size="small" color={"primary"} onClick={() => setCreateOpen(true)}>追加</Button>
+            <br/>
             <FormControl component="fieldset">
                 <RadioGroup row aria-label="gender" name="gender1" value={value} onChange={handleChange}>
                     <FormControlLabel value={1} control={<Radio color="primary"/>} label="有効"/>
                     <FormControlLabel value={2} control={<Radio color="secondary"/>} label="無効"/>
                 </RadioGroup>
             </FormControl>
+            <br/>
             {
                 users?.filter(user => checkUser(user)).map((user: UserDetailData) => (
                     <Card className={classes.root}>
@@ -103,6 +125,7 @@ export default function User() {
                     </Card>
                 ))
             }
+            <UserAddDialogs open={createOpen} setOpen={setCreateOpen} template={template} setReload={setReload}/>
         </Dashboard>
     );
 }

@@ -47,6 +47,20 @@ export interface UserDetailData {
     tokens?: TokenDetailData[]
 }
 
+export interface GroupDetailData {
+    ID: number,
+    CreatedAt: string,
+    UpdatedAt: string,
+    org: string,
+    status: number,
+    comment: string,
+    vlan: number,
+    enable: boolean,
+    max_vm: number,
+    max_cpu: number,
+    max_memory: number
+}
+
 export interface PaymentDetailData {
     ID: number,
     CreatedAt: string,
@@ -121,7 +135,28 @@ export interface VMCreateData {
 }
 
 export interface VMCreateDetailData {
+    name: string,
+    vcpu: number,
+    memory: number,
+    storage?: VMStorageCreateDetailData[],
+    nic?: VMNICCreateDetailData[]
+}
 
+export interface VMStorageCreateDetailData {
+    type: number,
+    driver: number,
+    mode: number
+    mac: string
+    device: string
+}
+
+export interface VMNICCreateDetailData {
+    type: number,
+    filetype: number,
+    path_type: number
+    path: string
+    readonly: boolean
+    boot: number
 }
 
 export interface VMCreateTemplateData {
@@ -139,6 +174,15 @@ export interface VMCreateTemplateData {
     pci: string[],
     usb: string[],
     nic_type: string,
+}
+
+export interface UserCreateData {
+    group_id: number,
+    name: string,
+    mail: string,
+    pass: string,
+    level: number,
+    mail_verify: boolean,
 }
 
 export interface VMListData {
@@ -193,65 +237,10 @@ export interface TemplatePlanData {
     hide: boolean
 }
 
-export interface GroupDetailData {
-    ID: number,
-    CreatedAt: string,
-    UpdatedAt: string,
-    payment_coupon_template_id?: number,
-    payment_membership_template_id?: number,
-    expired_status: number,
-    status: number,
-    pass: boolean,
-    add_allow: boolean,
-    agree: boolean,
-    question: string,
-    org: string,
-    org_en: string,
-    postcode: string,
-    address: string,
-    address_en: string,
-    tel: string,
-    country: string,
-    contract: string,
-    student: boolean,
-    student_expired: string,
-    fee: number,
-    lock: boolean,
-    paid: boolean,
-    member_expired: string,
-    users?: UserDetailData[],
-    tickets?: TicketDetailData[],
-    payment_coupon_template?: PaymentCouponTemplateData
-    payment_membership_template?: PaymentMembershipTemplate
-}
-
-export interface PaymentMembershipTemplate {
-    ID: number,
-    CreatedAt: string,
-    UpdatedAt: string,
-    title: string,
-    plan: string,
-    monthly: boolean,
-    yearly: boolean,
-    fee: number,
-    comment: string
-}
-
-export interface PaymentCouponTemplateData {
-    ID: number,
-    CreatedAt: string,
-    UpdatedAt: string,
-    title: string,
-    discount_rate: number,
-    comment: string
-}
-
 export interface TemplateBaseData {
     template: TemplateData[]
     storage?: StorageData[]
     node?: NodeData[]
-    payment_membership_template?: PaymentMembershipTemplate[]
-    payment_coupon_template?: PaymentCouponTemplateData[]
     user?: UserDetailData[]
     group?: GroupDetailData[]
 }
@@ -336,4 +325,21 @@ export const DefaultVMCreateTemplateData: VMCreateTemplateData = {
     pci: [""],
     usb: [""],
     nic_type: "",
+}
+
+export const DefaultVMCreateNoTemplateData: VMCreateDetailData = {
+    name: "",
+    vcpu: 1,
+    memory: 1024,
+    storage: undefined,
+    nic: undefined
+}
+
+export const DefaultUserCreateData: UserCreateData = {
+    group_id: 0,
+    name: "",
+    mail: "",
+    pass: "",
+    level: 0,
+    mail_verify: false,
 }
