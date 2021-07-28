@@ -1,19 +1,20 @@
 import React, {useEffect} from 'react';
 import {useSnackbar} from "notistack";
 import {
+    Accordion, AccordionDetails, AccordionSummary,
     Button,
     Dialog, DialogActions,
     DialogContent,
     DialogTitle,
     FormControl,
-    FormControlLabel,
+    FormControlLabel, FormLabel,
     Grid, InputLabel, LinearProgress, MenuItem,
     Radio,
-    RadioGroup, Select, TextField
+    RadioGroup, Select, TextField, Typography
 } from "@material-ui/core";
 import useStyles from "./style";
 import {
-    DefaultVMCreateData, DefaultVMCreateTemplateData, StorageData,
+    DefaultVMCreateData, DefaultVMCreateNoTemplateData, DefaultVMCreateTemplateData, StorageData,
     TemplateBaseData, TemplatePlanData,
 } from "../../interface";
 import {StorageType} from "../../components/Dashboard/Type/StorageType";
@@ -34,6 +35,8 @@ export function VMCreateDialog(props: {
     const [nodeID, setNodeID] = React.useState(0);
     const [tmpStorage, setTmpStorage] = React.useState<StorageData[]>();
     const [createTemplate, setCreateTemplate] = React.useState(DefaultVMCreateTemplateData);
+    const [createNoTemplate, setCreateNoTemplate] = React.useState(DefaultVMCreateNoTemplateData);
+    const [openStorageCreate, setOpenStorageCreate] = React.useState(false);
     // const [name, setName] = React.useState("");
     const {enqueueSnackbar} = useSnackbar();
 
@@ -113,9 +116,9 @@ export function VMCreateDialog(props: {
                             <RadioGroup row aria-label="template_apply" name="template_apply" value={templateApplyValue}
                                         onChange={(event) => {
                                             if (Number(event.target.value) === 1) {
-                                                setData({...data, template_apply: false})
+                                                setData({...DefaultVMCreateData, template_apply: false})
                                             } else {
-                                                setData({...data, template_apply: true})
+                                                setData({...DefaultVMCreateData, template_apply: true})
                                             }
                                         }}>
                                 <FormControlLabel checked={!data.template_apply} value={1}
@@ -147,6 +150,165 @@ export function VMCreateDialog(props: {
                             {/*    </Select>*/}
                             {/*</FormControl>*/}
                             <br/>
+                            {
+                                !data.template_apply &&
+                                <div>
+                                    <TextField
+                                        className={classes.formMedium}
+                                        id="name"
+                                        label="name"
+                                        multiline
+                                        rows={1}
+                                        value={createNoTemplate.name}
+                                        onChange={event => setCreateNoTemplate({
+                                            ...createNoTemplate,
+                                            name: event.target.value
+                                        })}
+                                        variant="outlined"
+                                    />
+                                    <br/>
+                                    <TextField
+                                        className={classes.formVeryShort}
+                                        required
+                                        id="cpu"
+                                        label="cpu"
+                                        value={createNoTemplate.vcpu}
+                                        type="number"
+                                        variant="outlined"
+                                        onChange={event => {
+                                            setCreateNoTemplate({
+                                                ...createNoTemplate,
+                                                vcpu: parseInt(event.target.value)
+                                            });
+                                        }}
+                                    />
+                                    <TextField
+                                        className={classes.formVeryShort}
+                                        required
+                                        id="memory"
+                                        label="RAM"
+                                        value={createNoTemplate.memory}
+                                        type="number"
+                                        variant="outlined"
+                                        onChange={event => {
+                                            setCreateNoTemplate({
+                                                ...createNoTemplate,
+                                                memory: parseInt(event.target.value)
+                                            });
+                                        }}
+                                    />
+                                    {/*<br/>*/}
+                                    {/*<FormLabel component="legend">Storage</FormLabel>*/}
+                                    {/*<br/>*/}
+                                    {/*<Button variant="contained" color="primary"*/}
+                                    {/*        onClick={() => setOpenStorageCreate(true)}>*/}
+                                    {/*    Storageの追加*/}
+                                    {/*</Button>*/}
+                                    {/*<Dialog*/}
+                                    {/*    open={open}*/}
+                                    {/*    onClose={() => setOpenStorageCreate(false)}*/}
+                                    {/*    aria-labelledby="form-dialog-title"*/}
+                                    {/*>*/}
+                                    {/*    <DialogTitle id="no_template_storage_add">Storage Add</DialogTitle>*/}
+                                    {/*    <DialogContent>*/}
+                                    {/*        <form className={classes.rootForm} noValidate autoComplete="off">*/}
+                                    {/*            <TextField*/}
+                                    {/*                className={classes.formVeryShort}*/}
+                                    {/*                required*/}
+                                    {/*                id="jpnic_tech_org"*/}
+                                    {/*                label="Org"*/}
+                                    {/*                value={jpnic.org}*/}
+                                    {/*                variant="outlined"*/}
+                                    {/*                inputProps={{*/}
+                                    {/*                    maxLength: 128,*/}
+                                    {/*                }}*/}
+                                    {/*                onChange={event => {*/}
+                                    {/*                    setJPNIC({...jpnic, org: event.target.value});*/}
+                                    {/*                }}*/}
+                                    {/*            />*/}
+                                    {/*            <TextField*/}
+                                    {/*                className={classes.formVeryShort}*/}
+                                    {/*                id="jpnic_tech_fax"*/}
+                                    {/*                label="Fax"*/}
+                                    {/*                value={jpnic.fax}*/}
+                                    {/*                variant="outlined"*/}
+                                    {/*                inputProps={{*/}
+                                    {/*                    maxLength: 32,*/}
+                                    {/*                }}*/}
+                                    {/*                onChange={event => {*/}
+                                    {/*                    setJPNIC({...jpnic, fax: event.target.value});*/}
+                                    {/*                    setData({...data, jpnic_admin: jpnic});*/}
+                                    {/*                }}*/}
+                                    {/*            />*/}
+                                    {/*        </form>*/}
+                                    {/*    </DialogContent>*/}
+                                    {/*    <DialogActions>*/}
+                                    {/*        <Button onClick={() => submit(true)}*/}
+                                    {/*                color="primary"> 管理連絡窓口の情報をコピー </Button>*/}
+                                    {/*        <Button onClick={handleClose} color="secondary"> Cancel </Button>*/}
+                                    {/*        <Button onClick={() => submit(false)} color="primary"> Submit </Button>*/}
+                                    {/*    </DialogActions>*/}
+                                    {/*</Dialog>*/}
+                                    {/*<br/>*/}
+                                    {/*<br/>*/}
+                                    {/*{*/}
+                                    {/*    data.jpnic_tech?.map((row, index) => (*/}
+                                    {/*        <Accordion key={index}>*/}
+                                    {/*            <AccordionSummary*/}
+                                    {/*                expandIcon={<ExpandMoreIcon/>}*/}
+                                    {/*                aria-controls="panel1a-content"*/}
+                                    {/*                id="panel1a-header"*/}
+                                    {/*            >*/}
+                                    {/*                <Typography*/}
+                                    {/*                    className={classes.heading}>{row.name}({row.name_en})</Typography>*/}
+                                    {/*            </AccordionSummary>*/}
+                                    {/*            <AccordionDetails>*/}
+                                    {/*                <Typography>*/}
+                                    {/*                    <form className={classes.rootForm} noValidate*/}
+                                    {/*                          autoComplete="off">*/}
+                                    {/*                        <TextField*/}
+                                    {/*                            className={classes.formVeryShort}*/}
+                                    {/*                            required*/}
+                                    {/*                            id="jpnic_tech_org"*/}
+                                    {/*                            label="Org"*/}
+                                    {/*                            value={jpnic.org}*/}
+                                    {/*                            variant="outlined"*/}
+                                    {/*                            inputProps={{*/}
+                                    {/*                                maxLength: 128,*/}
+                                    {/*                            }}*/}
+                                    {/*                            onChange={event => {*/}
+                                    {/*                                setJPNIC({...jpnic, org: event.target.value});*/}
+                                    {/*                            }}*/}
+                                    {/*                        />*/}
+                                    {/*                        <TextField*/}
+                                    {/*                            className={classes.formVeryShort}*/}
+                                    {/*                            id="jpnic_tech_fax"*/}
+                                    {/*                            label="Fax"*/}
+                                    {/*                            value={jpnic.fax}*/}
+                                    {/*                            variant="outlined"*/}
+                                    {/*                            inputProps={{*/}
+                                    {/*                                maxLength: 32,*/}
+                                    {/*                            }}*/}
+                                    {/*                            onChange={event => {*/}
+                                    {/*                                setJPNIC({...jpnic, fax: event.target.value});*/}
+                                    {/*                                setData({...data, jpnic_admin: jpnic});*/}
+                                    {/*                            }}*/}
+                                    {/*                        />*/}
+                                    {/*                    </form>*/}
+                                    {/*                    <Button size="small" variant="contained" color="primary"*/}
+                                    {/*                            className={classes.spaceRight}*/}
+                                    {/*                            onClick={() => changeData(index)}>変更</Button>*/}
+                                    {/*                    <Button size="small" variant="contained" color="secondary"*/}
+                                    {/*                            onClick={() => deleteData(index)}>削除</Button>*/}
+                                    {/*                </Typography>*/}
+                                    {/*            </AccordionDetails>*/}
+                                    {/*        </Accordion>*/}
+                                    {/*    ))*/}
+                                    {/*}*/}
+                                    {/*<br/>*/}
+                                    <br/>
+                                </div>
+                            }
                             {
                                 data.template_apply &&
                                 <div>

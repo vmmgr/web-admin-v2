@@ -9,6 +9,7 @@ import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
 import Node from "./pages/Node/Node";
 import VM from "./pages/VM/VM";
 import Group from "./pages/Group/Group";
+import {VMDetail} from "./pages/VM/VMDetail";
 
 export default class App extends React.Component {
     render() {
@@ -21,6 +22,7 @@ export default class App extends React.Component {
                     <Route exact path="/dashboard/group" component={Group}/>
                     <Route exact path="/dashboard/node" component={Node}/>
                     <Route exact path="/dashboard/vm" component={VM}/>
+                    <Route exact path="/dashboard/vm/:node_id/:uuid" component={VMDetail}/>
                     <Route exact path="/dashboard/token" component={Token}/>
                     <Route exact path="/dashboard/user" component={User}/>
                 </Switch>

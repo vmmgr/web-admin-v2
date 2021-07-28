@@ -19,6 +19,7 @@ import {restfulApiConfig} from "../../Config";
 import {VMStatus} from "../../components/Dashboard/Status/Status";
 import {GetAll} from "../../api/Template";
 import {VMCreateDialog} from "./VMCreateDialog";
+import {useHistory} from "react-router-dom";
 
 export default function VM() {
     const classes = useStyles();
@@ -29,6 +30,7 @@ export default function VM() {
     const [progress, setProgress] = useState(0);
     const [message, setMessage] = useState("");
     const {enqueueSnackbar} = useSnackbar();
+    const history = useHistory();
     // 1:有効 2:無効
     const [value, setValue] = React.useState(1);
     const {sendMessage, lastMessage, readyState,} = useWebSocket(restfulApiConfig.wsURL + "/vm" +
@@ -88,6 +90,7 @@ export default function VM() {
                         bootDev.push(tmpBoot.Dev)
                     }
                     const vm: VMListData = {
+                        node_id: tmpVM.node,
                         name: tmpVM.vm.Name,
                         uuid: tmpVM.vm.UUID,
                         status: tmpVM.stat,
@@ -120,6 +123,10 @@ export default function VM() {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValue(Number(event.target.value))
     };
+
+    const clickDetailPage = (nodeID: number, uuid: string) => {
+        history.push('/dashboard/vm/' + nodeID + '/' + uuid);
+    }
 
     const checkNode = (vm: VMListData) => {
         if (value === 2) {
@@ -183,7 +190,7 @@ export default function VM() {
                             CPU: {vm.vcpu} Memory: {vm.memory}KB
                         </CardContent>
                         <CardActions>
-                            {/*<Button size="small" onClick={() => clickDetailPage(notice.ID)}>Detail</Button>*/}
+                            <Button size="small" onClick={() => clickDetailPage(vm.node_id, vm.uuid)}>Detail</Button>
                         </CardActions>
                     </Card>
                 ))

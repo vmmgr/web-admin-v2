@@ -186,6 +186,7 @@ export interface UserCreateData {
 }
 
 export interface VMListData {
+    node_id: number,
     name: string,
     uuid: string,
     type: string,
@@ -239,6 +240,7 @@ export interface TemplatePlanData {
 
 export interface TemplateBaseData {
     template: TemplateData[]
+    novnc_url: string
     storage?: StorageData[]
     node?: NodeData[]
     user?: UserDetailData[]

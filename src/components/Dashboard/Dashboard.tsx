@@ -199,18 +199,6 @@ export default function Dashboard(props: any) {
                                 </ListItemIcon>
                                 <ListItemText primary="User"/>
                             </ListItem>
-                            <ListItem button className={classesMenu.nested} onClick={ServicePage}>
-                                <ListItemIcon>
-                                    <ClassIcon/>
-                                </ListItemIcon>
-                                <ListItemText primary="Service"/>
-                            </ListItem>
-                            <ListItem button className={classesMenu.nested} onClick={ConnectionPage}>
-                                <ListItemIcon>
-                                    <AccountTreeIcon/>
-                                </ListItemIcon>
-                                <ListItemText primary="Connection"/>
-                            </ListItem>
                             <ListItem button className={classesMenu.nested} onClick={TokenPage}>
                                 <ListItemIcon>
                                     <VpnKeyIcon/>
