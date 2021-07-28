@@ -179,6 +179,7 @@ export interface VMCreateTemplateData {
 export interface UserCreateData {
     group_id: number,
     name: string,
+    name_en: string,
     mail: string,
     pass: string,
     level: number,
@@ -340,6 +341,7 @@ export const DefaultVMCreateNoTemplateData: VMCreateDetailData = {
 export const DefaultUserCreateData: UserCreateData = {
     group_id: 0,
     name: "",
+    name_en: "",
     mail: "",
     pass: "",
     level: 0,

@@ -127,6 +127,17 @@ export function UserAddDialogs(props: {
                                     setData({...data, name: event.target.value});
                                 }}
                             />
+                            <TextField
+                                className={classes.formMedium}
+                                required
+                                id="name_en"
+                                label="name_en"
+                                value={data.name_en}
+                                variant="outlined"
+                                onChange={event => {
+                                    setData({...data, name_en: event.target.value});
+                                }}
+                            />
                             <br/>
                             <TextField
                                 className={classes.formMedium}
