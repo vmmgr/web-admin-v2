@@ -1,5 +1,4 @@
 import React, {Dispatch, SetStateAction} from 'react';
-import useStyles from "../VM/style"
 import {
     Button,
     Dialog, DialogActions, DialogContent, DialogTitle,
@@ -7,7 +6,7 @@ import {
     InputLabel, MenuItem,
     Radio,
     RadioGroup, Select, TextField,
-} from "@material-ui/core";
+} from "@mui/material";
 import {
     DefaultUserCreateData,
     TemplateBaseData,
@@ -22,7 +21,6 @@ export function UserAddDialogs(props: {
     template: TemplateBaseData | undefined,
     setReload: Dispatch<SetStateAction<boolean>>
 }) {
-    const classes = useStyles();
     const {open, setOpen, template, setReload} = props
     const [data, setData] = React.useState(DefaultUserCreateData);
     const {enqueueSnackbar} = useSnackbar();
@@ -61,7 +59,7 @@ export function UserAddDialogs(props: {
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
                             <h3>グループ選択</h3>
-                            <FormControl className={classes.formSelect}>
+                            <FormControl sx={{margin: 1, minWidth: 200}}>
                                 <InputLabel>Group指定</InputLabel>
                                 <Select
                                     labelId="group_id"
@@ -117,7 +115,6 @@ export function UserAddDialogs(props: {
                             </RadioGroup>
                             <br/>
                             <TextField
-                                className={classes.formMedium}
                                 required
                                 id="name"
                                 label="name"
@@ -126,9 +123,9 @@ export function UserAddDialogs(props: {
                                 onChange={event => {
                                     setData({...data, name: event.target.value});
                                 }}
+                                sx={{width: '35ch', marginBottom: 1, marginRight: 5}}
                             />
                             <TextField
-                                className={classes.formMedium}
                                 required
                                 id="name_en"
                                 label="name_en"
@@ -137,10 +134,10 @@ export function UserAddDialogs(props: {
                                 onChange={event => {
                                     setData({...data, name_en: event.target.value});
                                 }}
+                                sx={{width: '35ch', marginBottom: 1, marginRight: 5}}
                             />
                             <br/>
                             <TextField
-                                className={classes.formMedium}
                                 required
                                 id="E-Mail"
                                 label="E-Mail"
@@ -148,9 +145,9 @@ export function UserAddDialogs(props: {
                                 type={"email"}
                                 variant="outlined"
                                 onChange={event => setData({...data, mail: event.target.value})}
+                                sx={{width: '35ch', marginBottom: 1, marginRight: 5}}
                             />
                             <TextField
-                                className={classes.formMedium}
                                 required
                                 id="pass"
                                 label="pass"
@@ -158,6 +155,7 @@ export function UserAddDialogs(props: {
                                 type={"password"}
                                 variant="outlined"
                                 onChange={event => setData({...data, pass: event.target.value})}
+                                sx={{width: '35ch', marginBottom: 1, marginRight: 5}}
                             />
                             <br/>
                         </Grid>

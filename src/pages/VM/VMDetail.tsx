@@ -1,17 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
 import Dashboard from "../../components/Dashboard/Dashboard";
-import useStyles from "../Dashboard/styles"
 import {
     Button,
     Card,
     CardActions,
     CardContent,
-    FormControl,
-    FormControlLabel,
-    InputBase,
-    Paper, Radio, RadioGroup,
     Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import useWebSocket, {ReadyState} from "react-use-websocket";
 import {TemplateBaseData, VMListData} from "../../interface";
 import {useSnackbar} from "notistack";
@@ -20,10 +15,8 @@ import {VMStatus} from "../../components/Dashboard/Status/Status";
 import {GetAll} from "../../api/Template";
 import {VMCreateDialog} from "./VMCreateDialog";
 import {useParams} from 'react-router-dom';
-import {log} from "util";
 
 export function VMDetail() {
-    const classes = useStyles();
     const [vm, setVM] = useState<VMListData>();
     const [template, setTemplate] = useState<TemplateBaseData>();
     const [reload, setReload] = useState(true);
@@ -155,7 +148,7 @@ export function VMDetail() {
 
     return (
         <Dashboard title="VM">
-            <Card className={classes.root}>
+            <Card sx={{minWidth: 100, marginBottom: 1}}>
                 {
                     vm === undefined &&
                     <h2>データがありません</h2>
@@ -164,7 +157,7 @@ export function VMDetail() {
                     vm !== undefined &&
                     <div>
                         <CardContent>
-                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                            <Typography color="textSecondary" gutterBottom sx={{fontSize: 14}}>
                                 ID: {vm.uuid}
                             </Typography>
                             <Typography variant="h5" component="h2">

@@ -1,17 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
 import Dashboard from "../../components/Dashboard/Dashboard";
-import useStyles from "../Dashboard/styles"
-import {
-    Button,
-    Card,
-    CardActions,
-    CardContent,
-    FormControl,
-    FormControlLabel,
-    InputBase,
-    Paper, Radio, RadioGroup,
-    Typography
-} from "@material-ui/core";
 import useWebSocket, {ReadyState} from "react-use-websocket";
 import {TemplateBaseData, VMListData} from "../../interface";
 import {useSnackbar} from "notistack";
@@ -20,9 +8,20 @@ import {VMStatus} from "../../components/Dashboard/Status/Status";
 import {GetAll} from "../../api/Template";
 import {VMCreateDialog} from "./VMCreateDialog";
 import {useHistory} from "react-router-dom";
+import {
+    Button,
+    Card,
+    CardContent,
+    FormControl,
+    FormControlLabel, InputBase,
+    Paper,
+    Radio,
+    RadioGroup,
+    Typography,
+    CardActions
+} from '@mui/material';
 
 export default function VM() {
-    const classes = useStyles();
     const [vms, setVMs] = useState<VMListData[]>();
     const [initVMs, setInitVMs] = useState<VMListData[]>();
     const [template, setTemplate] = useState<TemplateBaseData>();
@@ -158,13 +157,19 @@ export default function VM() {
             <VMCreateDialog key={"vm_create_dialog"} sendMessage={sendMessage} templateBase={template} message={message}
                             progress={progress}/>
             <br/>
-            <Paper component="form" className={classes.rootInput}>
+            <Paper component="form" sx={{
+                minWidth: 100,
+                marginBottom: 1,
+            }}>
                 <InputBase
-                    className={classes.input}
                     placeholder="Search…"
                     inputProps={{'aria-label': 'search'}}
                     onChange={event => {
                         handleFilter(event.target.value)
+                    }}
+                    sx={{
+                        marginLeft: 1,
+                        flex: 1,
                     }}
                 />
             </Paper>
@@ -177,9 +182,12 @@ export default function VM() {
             </FormControl>
             {
                 vms?.filter(node => checkNode(node)).map((vm: VMListData) => (
-                    <Card className={classes.root}>
+                    <Card sx={{
+                        minWidth: 275,
+                        marginBottom: 5,
+                    }}>
                         <CardContent>
-                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                            <Typography color="textSecondary" gutterBottom sx={{fontSize: 14}}>
                                 ID: {vm.uuid}
                             </Typography>
                             <Typography variant="h5" component="h2">

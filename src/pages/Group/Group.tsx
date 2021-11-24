@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import Dashboard from "../../components/Dashboard/Dashboard";
-import useStyles from "../Dashboard/styles"
 import {
     Button,
     Card,
@@ -11,7 +10,7 @@ import {
     Paper, Radio,
     RadioGroup,
     Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import {GetAll} from "../../api/Group";
 import {useHistory} from "react-router-dom";
 import {GroupDetailData} from "../../interface";
@@ -19,7 +18,6 @@ import {useSnackbar} from "notistack";
 
 
 export default function Group() {
-    const classes = useStyles();
     const [groups, setGroups] = useState<GroupDetailData[]>();
     const [initGroups, setInitGroups] = useState<GroupDetailData[]>();
     const history = useHistory();
@@ -71,13 +69,19 @@ export default function Group() {
 
     return (
         <Dashboard title="Group Info">
-            <Paper component="form" className={classes.rootInput}>
+            <Paper component="form" sx={{
+                minWidth: 100,
+                marginBottom: 1,
+            }}>
                 <InputBase
-                    className={classes.input}
                     placeholder="Search…"
                     inputProps={{'aria-label': 'search'}}
                     onChange={event => {
                         handleFilter(event.target.value)
+                    }}
+                    sx={{
+                        marginLeft: 1,
+                        flex: 1,
                     }}
                 />
             </Paper>
@@ -89,9 +93,12 @@ export default function Group() {
             </FormControl>
             {
                 groups?.filter(group => checkGroup(group)).map((group: GroupDetailData) => (
-                    <Card className={classes.root}>
+                    <Card sx={{
+                        minWidth: 275,
+                        marginBottom: 5,
+                    }}>
                         <CardContent>
-                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                            <Typography color="textSecondary" gutterBottom sx={{fontSize: 14}}>
                                 ID: {group.ID}
                             </Typography>
                             <Typography variant="h5" component="h2">

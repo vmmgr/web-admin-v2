@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
 import {useSnackbar} from "notistack";
 import {
-    Accordion, AccordionDetails, AccordionSummary,
     Button,
     Dialog, DialogActions,
     DialogContent,
@@ -11,8 +10,7 @@ import {
     Grid, InputLabel, LinearProgress, MenuItem,
     Radio,
     RadioGroup, Select, TextField, Typography
-} from "@material-ui/core";
-import useStyles from "./style";
+} from "@mui/material";
 import {
     DefaultVMCreateData, DefaultVMCreateNoTemplateData, DefaultVMCreateTemplateData, StorageData,
     TemplateBaseData, TemplatePlanData,
@@ -28,7 +26,6 @@ export function VMCreateDialog(props: {
     message: string
 }) {
     const {templateBase, sendMessage, progress, message} = props;
-    const classes = useStyles();
     const [data, setData] = React.useState(DefaultVMCreateData);
     const [open, setOpen] = React.useState(false);
     const [tmpPlan, setTmpPlan] = React.useState<TemplatePlanData[]>();
@@ -95,7 +92,10 @@ export function VMCreateDialog(props: {
                             <br/>
                             {
                                 data.group_id !== 0 &&
-                                <FormControl className={classes.formSelect}>
+                                <FormControl sx={{
+                                    margin: 1,
+                                    minWidth: 200,
+                                }}>
                                     <InputLabel>Group指定</InputLabel>
                                     <Select
                                         labelId="group_id"
@@ -154,7 +154,6 @@ export function VMCreateDialog(props: {
                                 !data.template_apply &&
                                 <div>
                                     <TextField
-                                        className={classes.formMedium}
                                         id="name"
                                         label="name"
                                         multiline
@@ -165,10 +164,14 @@ export function VMCreateDialog(props: {
                                             name: event.target.value
                                         })}
                                         variant="outlined"
+                                        sx={{
+                                            width: '35ch',
+                                            marginBottom: 1,
+                                            marginRight: 5,
+                                        }}
                                     />
                                     <br/>
                                     <TextField
-                                        className={classes.formVeryShort}
                                         required
                                         id="cpu"
                                         label="cpu"
@@ -181,9 +184,13 @@ export function VMCreateDialog(props: {
                                                 vcpu: parseInt(event.target.value)
                                             });
                                         }}
+                                        sx={{
+                                            width: '20ch',
+                                            marginRight: 5,
+                                            marginBottom: 1,
+                                        }}
                                     />
                                     <TextField
-                                        className={classes.formVeryShort}
                                         required
                                         id="memory"
                                         label="RAM"
@@ -195,6 +202,11 @@ export function VMCreateDialog(props: {
                                                 ...createNoTemplate,
                                                 memory: parseInt(event.target.value)
                                             });
+                                        }}
+                                        sx={{
+                                            width: '20ch',
+                                            marginRight: 5,
+                                            marginBottom: 1,
                                         }}
                                     />
                                     {/*<br/>*/}
@@ -312,7 +324,7 @@ export function VMCreateDialog(props: {
                             {
                                 data.template_apply &&
                                 <div>
-                                    <FormControl className={classes.formSelect}>
+                                    <FormControl sx={{margin: 1, minWidth: 200}}>
                                         <InputLabel>Storage指定</InputLabel>
                                         <Select
                                             labelId="template_storage"
@@ -335,7 +347,7 @@ export function VMCreateDialog(props: {
                                         </Select>
                                     </FormControl>
                                     <br/>
-                                    <FormControl className={classes.formSelect}>
+                                    <FormControl sx={{margin: 1, minWidth: 200}}>
                                         <InputLabel>Template Image指定</InputLabel>
                                         <Select
                                             labelId="template_image"
@@ -357,7 +369,7 @@ export function VMCreateDialog(props: {
                                             }
                                         </Select>
                                     </FormControl>
-                                    <FormControl className={classes.formSelect}>
+                                    <FormControl sx={{margin: 1, minWidth: 200}}>
                                         <InputLabel>Plan指定</InputLabel>
                                         <Select
                                             labelId="template_plan"
@@ -382,7 +394,6 @@ export function VMCreateDialog(props: {
                                     </FormControl>
                                     <br/>
                                     <TextField
-                                        className={classes.formMedium}
                                         id="name_template"
                                         label="name"
                                         multiline
@@ -393,10 +404,14 @@ export function VMCreateDialog(props: {
                                             name: event.target.value
                                         })}
                                         variant="outlined"
+                                        sx={{
+                                            width: '35ch',
+                                            marginBottom: 1,
+                                            marginRight: 5,
+                                        }}
                                     />
                                     <br/>
                                     <TextField
-                                        className={classes.formMedium}
                                         id="pass_template"
                                         label="pass"
                                         multiline
@@ -408,10 +423,14 @@ export function VMCreateDialog(props: {
                                         })}
                                         type={"password"}
                                         variant="outlined"
+                                        sx={{
+                                            width: '35ch',
+                                            marginBottom: 1,
+                                            marginRight: 5,
+                                        }}
                                     />
                                     <br/>
                                     <TextField
-                                        className={classes.formVeryShort}
                                         id="ip_template"
                                         label="IP Address"
                                         multiline
@@ -422,9 +441,13 @@ export function VMCreateDialog(props: {
                                             ip: event.target.value
                                         })}
                                         variant="outlined"
+                                        sx={{
+                                            width: '20ch',
+                                            marginRight: 5,
+                                            marginBottom: 1,
+                                        }}
                                     />
                                     <TextField
-                                        className={classes.formVeryShort}
                                         id="netmask_template"
                                         label="Netmask"
                                         multiline
@@ -435,9 +458,13 @@ export function VMCreateDialog(props: {
                                             netmask: event.target.value
                                         })}
                                         variant="outlined"
+                                        sx={{
+                                            width: '20ch',
+                                            marginRight: 5,
+                                            marginBottom: 1,
+                                        }}
                                     />
                                     <TextField
-                                        className={classes.formShort}
                                         id="gateway_template"
                                         label="Gateway"
                                         multiline
@@ -448,9 +475,13 @@ export function VMCreateDialog(props: {
                                             gateway: event.target.value
                                         })}
                                         variant="outlined"
+                                        sx={{
+                                            width: '30ch',
+                                            marginBottom: 1,
+                                            marginRight: 5,
+                                        }}
                                     />
                                     <TextField
-                                        className={classes.formMedium}
                                         id="dns_template"
                                         label="DNS"
                                         multiline
@@ -461,10 +492,14 @@ export function VMCreateDialog(props: {
                                             dns: event.target.value
                                         })}
                                         variant="outlined"
+                                        sx={{
+                                            width: '35ch',
+                                            marginBottom: 1,
+                                            marginRight: 5,
+                                        }}
                                     />
                                     <br/>
                                     <TextField
-                                        className={classes.formMedium}
                                         id="nic_type"
                                         label="NIC_Type"
                                         multiline
@@ -475,6 +510,11 @@ export function VMCreateDialog(props: {
                                             nic_type: event.target.value
                                         })}
                                         variant="outlined"
+                                        sx={{
+                                            width: '35ch',
+                                            marginBottom: 1,
+                                            marginRight: 5,
+                                        }}
                                     />
                                     <br/>
                                 </div>

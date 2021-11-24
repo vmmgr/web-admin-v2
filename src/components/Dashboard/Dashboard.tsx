@@ -1,43 +1,90 @@
 import React from 'react';
-import clsx from 'clsx';
 import {
-    AppBar,
-    Badge, Collapse, colors,
-    Container, createMuiTheme, ThemeProvider,
+    Badge, Collapse,
+    Container, ThemeProvider,
     CssBaseline,
     Divider,
-    Drawer,
     IconButton,
     List, ListItem, ListItemIcon, ListItemText,
     Toolbar,
     Typography,
-    MenuItem, Menu, Fade
-} from "@material-ui/core";
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import {ExpandLess, ExpandMore} from "@material-ui/icons";
-import DashboardIcon from "@material-ui/icons/Dashboard";
-import PersonIcon from "@material-ui/icons/Person";
-import PeopleIcon from "@material-ui/icons/People";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import LayersIcon from "@material-ui/icons/Layers";
-import ClassIcon from '@material-ui/icons/Class';
-import AccountTreeIcon from '@material-ui/icons/AccountTree';
-import VpnKeyIcon from "@material-ui/icons/VpnKey";
-import ChatIcon from "@material-ui/icons/Chat";
-import SettingsIcon from "@material-ui/icons/Settings";
-import PermIdentityIcon from '@material-ui/icons/PermIdentity';
-import ComputerIcon from '@material-ui/icons/Computer';
-import ViewAgendaIcon from '@material-ui/icons/ViewAgenda';
-import useStyles from "./styles";
-import useSideBarStyles from "./SideBar/styles";
+    MenuItem, Menu, Fade, Box, styled,
+} from "@mui/material";
+import MuiDrawer from '@mui/material/Drawer';
+import MuiAppBar, {AppBarProps as MuiAppBarProps} from '@mui/material/AppBar';
+import MenuIcon from '@mui/icons-material/Menu';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import {ExpandLess, ExpandMore} from "@mui/icons-material";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import PersonIcon from "@mui/icons-material/Person";
+import PeopleIcon from "@mui/icons-material/People";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import LayersIcon from "@mui/icons-material/Layers";
+import ClassIcon from '@mui/icons-material/Class';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import VpnKeyIcon from "@mui/icons-material/VpnKey";
+import ChatIcon from "@mui/icons-material/Chat";
+import SettingsIcon from "@mui/icons-material/Settings";
+import PermIdentityIcon from '@mui/icons-material/PermIdentity';
+import ComputerIcon from '@mui/icons-material/Computer';
+import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import {useHistory} from "react-router-dom";
 import {Logout} from "../../api/Auth";
+import {colorTheme} from "../Theme";
+
+const drawerWidth: number = 240;
+
+interface AppBarProps extends MuiAppBarProps {
+    open?: boolean;
+}
+
+
+const AppBar = styled(MuiAppBar, {
+    shouldForwardProp: (prop) => prop !== 'open',
+})<AppBarProps>(({theme, open}) => ({
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(['width', 'margin'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+    }),
+    ...(open && {
+        marginLeft: drawerWidth,
+        width: `calc(100% - ${drawerWidth}px)`,
+        transition: theme.transitions.create(['width', 'margin'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+    }),
+}));
+
+const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})(
+    ({theme, open}) => ({
+        '& .MuiDrawer-paper': {
+            position: 'relative',
+            whiteSpace: 'nowrap',
+            width: drawerWidth,
+            transition: theme.transitions.create('width', {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.enteringScreen,
+            }),
+            boxSizing: 'border-box',
+            ...(!open && {
+                overflowX: 'hidden',
+                transition: theme.transitions.create('width', {
+                    easing: theme.transitions.easing.sharp,
+                    duration: theme.transitions.duration.leavingScreen,
+                }),
+                width: theme.spacing(7),
+                [theme.breakpoints.up('sm')]: {
+                    width: theme.spacing(9),
+                },
+            }),
+        },
+    }),
+);
 
 export default function Dashboard(props: any) {
-    const classesDashboard = useStyles();
-    const classesMenu = useSideBarStyles();
     // Menu Bar
     const [open, setOpen] = React.useState(false);
     const handleDrawerOpen = () => {
@@ -56,16 +103,6 @@ export default function Dashboard(props: any) {
             setOpen(true);
         }
     };
-
-    const theme = createMuiTheme({
-        palette: {
-            primary: {
-                main: colors.blue[800],
-            },
-            type: "dark",
-            // type: darkMode ? "dark" : "light",
-        },
-    });
 
     const history = useHistory();
 
@@ -104,23 +141,26 @@ export default function Dashboard(props: any) {
     }
 
     return (
-        <ThemeProvider theme={theme}>
-            <div className={classesDashboard.root}>
+        <ThemeProvider theme={colorTheme}>
+            <Box sx={{display: 'flex'}}>
                 <CssBaseline/>
-                <AppBar position="absolute"
-                        className={clsx(classesDashboard.appBar, open && classesDashboard.appBarShift)}>
-                    <Toolbar className={classesDashboard.toolbar}>
+                <AppBar position="absolute" open={open}>
+                    <Toolbar sx={{
+                        pr: '24px',
+                    }}>
                         <IconButton
                             edge="start"
                             color="inherit"
                             aria-label="open drawer"
                             onClick={handleDrawerOpen}
-                            className={clsx(classesDashboard.menuButton, open && classesDashboard.menuButtonHidden)}
+                            sx={{
+                                marginRight: '36px',
+                                ...(open && {display: 'none'}),
+                            }}
                         >
                             <MenuIcon/>
                         </IconButton>
-                        <Typography component="h1" variant="h6" color="inherit" noWrap
-                                    className={classesDashboard.title}>
+                        <Typography component="h1" variant="h6" color="inherit" noWrap sx={{flexGrow: 1}}>
                             vmmgr Admin Page
                         </Typography>
                         <IconButton color="inherit">
@@ -131,16 +171,19 @@ export default function Dashboard(props: any) {
                         <UserMenu key={"user_menu"}/>
                     </Toolbar>
                 </AppBar>
-                <Drawer
-                    variant="permanent"
-                    classes={{paper: clsx(classesDashboard.drawerPaper, !open && classesDashboard.drawerPaperClose),}}
-                    open={open}
-                >
-                    <div className={classesDashboard.toolbarIcon}>
+                <Drawer variant="permanent" open={open}>
+                    <Toolbar
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'flex-end',
+                            px: [1],
+                        }}
+                    >
                         <IconButton onClick={handleDrawerClose}>
                             <ChevronLeftIcon/>
                         </IconButton>
-                    </div>
+                    </Toolbar>
                     <Divider/>
                     <ListItem button onClick={DashboardPage}>
                         <ListItemIcon>
@@ -148,12 +191,12 @@ export default function Dashboard(props: any) {
                         </ListItemIcon>
                         <ListItemText primary="Dashboard"/>
                     </ListItem>
-                    <ListItem button onClick={NoticePage}>
-                        <ListItemIcon>
-                            <NotificationsIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary="Notice"/>
-                    </ListItem>
+                    {/*<ListItem button onClick={NoticePage}>*/}
+                    {/*    <ListItemIcon>*/}
+                    {/*        <NotificationsIcon/>*/}
+                    {/*    </ListItemIcon>*/}
+                    {/*    <ListItemText primary="Notice"/>*/}
+                    {/*</ListItem>*/}
                     <ListItem button onClick={GroupPage}>
                         <ListItemIcon>
                             <PeopleIcon/>
@@ -178,12 +221,12 @@ export default function Dashboard(props: any) {
                     {/*    </ListItemIcon>*/}
                     {/*    <ListItemText primary="Orders"/>*/}
                     {/*</ListItem>*/}
-                    <ListItem button onClick={SupportPage}>
-                        <ListItemIcon>
-                            <ChatIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary="Chat"/>
-                    </ListItem>
+                    {/*<ListItem button onClick={SupportPage}>*/}
+                    {/*    <ListItemIcon>*/}
+                    {/*        <ChatIcon/>*/}
+                    {/*    </ListItemIcon>*/}
+                    {/*    <ListItemText primary="Chat"/>*/}
+                    {/*</ListItem>*/}
                     <ListItem button onClick={handleClick}>
                         <ListItemIcon>
                             <LayersIcon/>
@@ -193,13 +236,19 @@ export default function Dashboard(props: any) {
                     </ListItem>
                     <Collapse in={openOther} timeout="auto" unmountOnExit>
                         <List component="div" disablePadding>
-                            <ListItem button className={classesMenu.nested} onClick={UserPage}>
+                            <ListItem button={true} onClick={UserPage} sx={{
+                                marginLeft: 2,
+                                marginRight: -2
+                            }}>
                                 <ListItemIcon>
                                     <PersonIcon/>
                                 </ListItemIcon>
                                 <ListItemText primary="User"/>
                             </ListItem>
-                            <ListItem button className={classesMenu.nested} onClick={TokenPage}>
+                            <ListItem button={true} onClick={TokenPage} sx={{
+                                marginLeft: 2,
+                                marginRight: -2
+                            }}>
                                 <ListItemIcon>
                                     <VpnKeyIcon/>
                                 </ListItemIcon>
@@ -214,30 +263,40 @@ export default function Dashboard(props: any) {
                         <ListItemText primary="Setting"/>
                     </ListItem>
                     <Divider/>
-                    {/*<List>{secondaryList}</List>*/}
                 </Drawer>
-                <main className={classesDashboard.content}>
-                    <div className={classesDashboard.appBarSpacer}/>
-                    <Container maxWidth="lg" className={classesDashboard.container}>
+                <Box
+                    component="main"
+                    sx={{
+                        backgroundColor: (theme) =>
+                            theme.palette.mode === 'light'
+                                ? theme.palette.grey[100]
+                                : theme.palette.grey[900],
+                        flexGrow: 1,
+                        height: '100vh',
+                        overflow: 'auto',
+                    }}
+                >
+                    <Container maxWidth="lg" sx={{mt: 4, mb: 4}}>
                         <Typography
                             component="h2"
                             variant="h5"
                             color="inherit"
                             noWrap
-                            className={classesDashboard.pageTitle}
+                            sx={{
+                                marginBottom: 1
+                            }}
                         >
                             {props.title}
                         </Typography>
                         {props.children}
                     </Container>
-                </main>
-            </div>
+                </Box>
+            </Box>
         </ThemeProvider>
     );
 }
 
 export function UserMenu() {
-    const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const history = useHistory();
@@ -264,7 +323,7 @@ export function UserMenu() {
     }
 
     return (
-        <div className={classes.root}>
+        <Box>
             <IconButton
                 color="inherit"
                 aria-controls={open ? 'menu-list-grow' : undefined}
@@ -284,6 +343,6 @@ export function UserMenu() {
                 {/*<MenuItem onClick={handleClose}>Profile</MenuItem>*/}
                 <MenuItem onClick={clickLogout}>Logout</MenuItem>
             </Menu>
-        </div>
+        </Box>
     );
 }

@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import Dashboard from "../../components/Dashboard/Dashboard";
-import useStyles from "../Dashboard/styles"
 import {
     Button,
     Card,
@@ -11,7 +10,7 @@ import {
     InputBase,
     Paper, Radio, RadioGroup,
     Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import {GetAll} from "../../api/User";
 import {GetAll as TemplateGetAll} from "../../api/Template";
 import {TemplateBaseData, UserDetailData} from "../../interface";
@@ -20,7 +19,6 @@ import {UserAddDialogs} from "./UserAddDialog";
 
 
 export default function User() {
-    const classes = useStyles();
     const [users, setUsers] = useState<UserDetailData[]>();
     const [initUsers, setInitUsers] = useState<UserDetailData[]>();
     const [template, setTemplate] = useState<TemplateBaseData>();
@@ -88,14 +86,14 @@ export default function User() {
 
     return (
         <Dashboard title="User Info">
-            <Paper component="form" className={classes.rootInput}>
+            <Paper component="form" sx={{minWidth: 100, marginBottom: 1}}>
                 <InputBase
-                    className={classes.input}
                     placeholder="Search…"
                     inputProps={{'aria-label': 'search'}}
                     onChange={event => {
                         handleFilter(event.target.value)
                     }}
+                    sx={{marginLeft: 1, flex: 1}}
                 />
             </Paper>
             <Button size="small" color={"primary"} onClick={() => setCreateOpen(true)}>追加</Button>
@@ -109,9 +107,9 @@ export default function User() {
             <br/>
             {
                 users?.filter(user => checkUser(user)).map((user: UserDetailData) => (
-                    <Card className={classes.root}>
+                    <Card sx={{minWidth: 275, marginBottom: 1}}>
                         <CardContent>
-                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                            <Typography color="textSecondary" gutterBottom sx={{fontSize: 14}}>
                                 ID: {user.ID}
                             </Typography>
                             <Typography variant="h5" component="h2">

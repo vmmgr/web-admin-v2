@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import Dashboard from "../../components/Dashboard/Dashboard";
-import useStyles from "../Dashboard/styles"
 import {
     Card,
     CardActions,
@@ -10,7 +9,7 @@ import {
     InputBase,
     Paper, Radio, RadioGroup,
     Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import {GetAll} from "../../api/Token";
 import {
     TokenDetailData,
@@ -19,7 +18,6 @@ import {useSnackbar} from "notistack";
 
 
 export default function Token() {
-    const classes = useStyles();
     const [tokens, setTokens] = useState<TokenDetailData[]>();
     const [initTokens, setInitTokens] = useState<TokenDetailData[]>();
     const {enqueueSnackbar} = useSnackbar();
@@ -71,14 +69,15 @@ export default function Token() {
 
     return (
         <Dashboard title="Token Info">
-            <Paper component="form" className={classes.rootInput}>
+            <Paper component="form" sx={{minWidth: 100, marginBottom: 1}}>
                 <InputBase
-                    className={classes.input}
+
                     placeholder="Search…"
                     inputProps={{'aria-label': 'search'}}
                     onChange={event => {
                         handleFilter(event.target.value)
                     }}
+                    sx={{marginLeft: 1, flex: 1}}
                 />
             </Paper>
             <FormControl component="fieldset">
@@ -89,9 +88,9 @@ export default function Token() {
             </FormControl>
             {
                 tokens?.filter(token => checkToken(token)).map((token: TokenDetailData) => (
-                    <Card className={classes.root}>
+                    <Card sx={{minWidth: 275, marginBottom: 5}}>
                         <CardContent>
-                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                            <Typography color="textSecondary" gutterBottom>
                                 ID: {token.ID}
                             </Typography>
                             <Typography variant="h5" component="h2">

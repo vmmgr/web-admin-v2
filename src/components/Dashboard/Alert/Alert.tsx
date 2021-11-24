@@ -1,13 +1,9 @@
-import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide} from "@material-ui/core";
+import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide, SlideProps} from "@mui/material";
 import React, {Dispatch, SetStateAction} from "react";
-import {TransitionProps} from "@material-ui/core/transitions";
 
-const Transition = React.forwardRef(function Transition(
-    props: TransitionProps & { children?: React.ReactElement<any, any> },
-    ref: React.Ref<unknown>,
-) {
-    return <Slide direction="up" ref={ref} {...props} />;
-});
+function Transition(props: JSX.IntrinsicAttributes & SlideProps) {
+    return <Slide {...props} direction="left" />;
+}
 
 export function DeleteAlertDialog(props: {
     setDeleteProcess: Dispatch<SetStateAction<boolean>>

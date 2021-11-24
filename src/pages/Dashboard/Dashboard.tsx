@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import DashboardComponent from "../../components/Dashboard/Dashboard";
 import {useSnackbar} from "notistack";
-import {Grid} from "@material-ui/core";
+import {Grid} from "@mui/material";
 
 
 export default function Dashboard() {
